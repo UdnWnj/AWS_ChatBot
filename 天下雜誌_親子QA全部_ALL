@@ -1,0 +1,381 @@
+import json
+import boto3
+
+
+def get_slots(intent_request):
+    return intent_request['sessionState']['intent']['slots']
+
+
+def get_slot(intent_request, slotName):
+    slots = get_slots(intent_request)
+    if slots is not None and slotName in slots and slots[slotName] is not None:
+        return slots[slotName]['value']['interpretedValue']
+    else:
+        return None
+
+
+def get_session_attributes(intent_request):
+    sessionState = intent_request['sessionState']
+    if 'sessionAttributes' in sessionState:
+        return sessionState['sessionAttributes']
+    return {}
+
+
+
+
+def FAQ(intent_request):
+    mes='您可以繼續查詢，如需人工支持，請輸入轉人工，謝謝!'
+
+    session_attributes = get_session_attributes(intent_request)
+    #item_slot = get_slot(intent_request, 'Item')
+    input_slot = get_slot(intent_request, 'input')
+    # fulfillment_state = "Fulfilled"
+    # if item_slot=='1':
+    if input_slot=='1':
+        text='請點選首頁右上方「註冊」，即可註冊會員，或用已有的親子天下會員帳號登入。' \
+             '\n如您的親子天下帳號為已登入狀態，線上學校網站將會自動登入相同帳號。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot=='2':
+        text='親子天下線上學校目前僅支援信用卡付款，造成您的不便，敬請見諒。我們未來也將加緊腳步納入其他支付方式。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot=='3':
+        text='線上學校的所有課程都是在網路上觀看的，不限時間地點，只要有網路，您就可以打開線上學校網站來上課。' \
+             '(建議使用IE以外的瀏覽器) https://drive.google.com/file/d/16ppwyWD6t2-hTF3m_UarJVKA9OFue3ZU/view'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot=='4':
+        text='線上學校的每一門課程總長約1~3小時，依據課程設計拆分成5～37堂不等。每堂課講授一個議題，' \
+             '時間約10分鐘左右，所以您每次花10分鐘，就能學到重要的概念。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot=='5':
+        text='1.請先登入購買帳號 2.在上方選單中點選「我的主頁」，即可以看到所有已購買的課程。' \
+             ' 3.若購買的課程尚在預購期間，則需等待課程正式開課後（預購最後一天的隔天）得以上課。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot=='6':
+        text='網路文章多半是精簡的、片面的，甚至有許多是經驗談。親子天下線上學校邀請教育、教養相關領域的專家，授課內容不但有豐厚的學理依據，' \
+             '還有實用的技巧與解方，加上親子天下長期深耕教育教養領域的專業度，絕對值得您信賴。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot=='7':
+        text='影音學習方式跟紙本很不一樣，您只要打開網頁收看課程，就能輕鬆上課。您甚至可以邊處理手上工作、邊收聽，一樣有學習的效果。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot=='8':
+        text='觀看課程沒有限制裝置，您可以在手機、平板、桌機觀看影片。唯要注意：同一時間，一組帳號僅能在一台裝置上登入與觀課。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot=='9':
+        text='您可以在任何能連上網路的地區，觀看線上學校的所有課程。近期由於中國大陸意外封鎖台灣部分媒體服務，造成部分網站無法在中國大陸部分地區瀏覽。' \
+             '若您發現您所在地區無法連線至線上學校網站，請您先向所在地的「網路服務電信業者」反映此問題並瞭解原因後，再決定是否訂閱課程。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    
+def Platform(intent_request): 
+    mes='您可以繼續查詢，如需人工支持，請輸入轉人工，謝謝!'
+
+    session_attributes = get_session_attributes(intent_request)
+    #item_slot = get_slot(intent_request, 'Item')
+    input_slot2 = get_slot(intent_request, 'input2')
+    # fulfillment_state = "Fulfilled"
+    # if item_slot=='1':
+    if input_slot2=='1':
+        text='請點選首頁右上方「註冊」，即可註冊會員，或用已有的親子天下會員帳號登入。' \
+             '\n如您的親子天下帳號為已登入狀態，線上學校網站將會自動登入相同帳號。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot2=='2':
+        text='登入後，點擊「我的主頁」，您將會在頭像右側看見「若需修改密碼、會員資料，請點此，登入後進行修改。」'\
+             '點擊文字「請點此」，您將會進入「親子天下會員中心」，接著點擊左側列表的「帳戶中心」，即可修改個人資料或密碼。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot2=='3':
+        text='1.點擊「登入」，點擊下方「忘記密碼」，系統自動進入天下顧客服務中心。' \
+             '2.輸入註冊時的E-mail及驗證碼後，系統將自動派送一組更新密碼連結至您的信箱中。' \
+             '3.請您至E-mail信箱中收件後，點擊連結重新設定密碼後，再以新密碼登入。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot2=='4':
+        text='1.登入後點擊右上角頭像' \
+             '2.點擊訂單記錄即可查看'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot2=='5':
+        text='觀看課程沒有限制裝置，您可以在手機、平板、桌機觀看影片。' \
+             '唯要注意：同一時間，一組帳號僅能在一台裝置上登入與觀課。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot2=='6':
+        text='您可以在任何能連上網路的地區，觀看線上學校的所有課程。' \
+             '近期由於中國大陸意外封鎖台灣部分媒體服務，造成部分網站無法在中國大陸部分地區瀏覽。若您發現您所在地區無法連線' \
+             '至線上學校網站，請您先向所在地的「網路服務電信業者」反映此問題並瞭解原因後，再決定是否訂閱課程。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot2=='7':
+        text='1.登入後進入欲購買課程頁面' \
+             '2.點擊「立即購買」' \
+             '3.於發票欄位下方，點擊「使用折價券」' \
+             '4.點擊「選擇折價券」並選擇您擁有的折價卷，或輸入折扣序號即可' \
+             '*請在付款前確認要輸入使用折扣碼與其它的必要資訊，付款後將不得要求更換使用其它折扣碼。若欲取消訂單重新下單依訂單取消規定辦理。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot2=='8':
+        text='1.登入線上學校官網' \
+             '使用電腦：點選右上角人像' \
+             '使用行動裝置：點選右上選單' \
+             '2.點選「兌換卷」，並輸入序號' \
+             '3.點選「立即使用」，並選擇「兌換」' \
+             '4.兌換完成後，即可在「我的課程」找到'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+        
+def BuyClass(intent_request): 
+    mes='您可以繼續查詢，如需人工支持，請輸入轉人工，謝謝!'
+
+    session_attributes = get_session_attributes(intent_request)
+    #item_slot = get_slot(intent_request, 'Item')
+    input_slot3 = get_slot(intent_request, 'input3')
+    # fulfillment_state = "Fulfilled"
+    # if item_slot=='1':
+    if input_slot3=='1':
+        text='親子天下線上學校目前僅支援信用卡付款，造成您的不便，敬請見諒。我們未來也將加緊腳步納入其他支付方式。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot3=='2':
+        text='線上學校平台為獨立平台，因此無法以親子天下Shopping E-coupon購課，造成您的不便請見諒。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot3=='3':
+        text='線上學校平台為獨立平台，因此無法以親子幣購課，造成您的不便請見諒。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot3=='4':
+        text='因應電子發票開立，此平台具有會員載具功能，將電子發票歸戶於親子天下會員帳號。' \
+             '因此訂購人資訊將自動綁訂親子天下會員資訊，無法修改。' \
+             '若您需修改會員資訊，請依照「平台操作」中「個人資料修改流程」操作。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot3=='5':
+        text='代表您的結帳流程尚未完成，可在三天內繼續完成結帳，三天後將失效。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot3=='6':
+        text='1.授權失敗（例：信用卡發卡銀行系統忙碌、網路塞車與刷卡等待時間過久造成系統確認失敗等問題），建議等待一段時間再重新刷卡。' \
+             '2.輸入信用卡卡號資料不正確（例：輸入資料不正確、卡號過期、尚未開卡等問題），建議重新確認輸入資訊。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot3=='7':
+        text='1. 目前僅提供信用卡一次付清，無分期付款功能。' \
+             '2. 可使用Master/Visa/JCB付款，不在上述內的卡別無法使用喔！'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+
+def WatchClass(intent_request): 
+    mes='您可以繼續查詢，如需人工支持，請輸入轉人工，謝謝!'
+
+    session_attributes = get_session_attributes(intent_request)
+    #item_slot = get_slot(intent_request, 'Item')
+    input_slot4 = get_slot(intent_request, 'input4')
+    # fulfillment_state = "Fulfilled"
+    # if item_slot=='1':
+    if input_slot4=='1':
+        text='線上學校的每一門課程總長約1~3小時，依據課程設計拆分成5～37堂不等。每堂課講授一個議題，時間約10分鐘左右，所以您每次花10分鐘，就能學到重要的概念。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot4=='2':
+        text='線上學校的所有課程影片，皆是不限次數且無觀看期限的。您可以無限次觀看已購買的課程內容'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot4=='3':
+        text='觀看課程沒有限制裝置，您可以在手機、平板、桌機觀看影片。' \
+             '唯要注意：同一時間，一組帳號僅能在一台裝置上登入與觀課。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot4=='4':
+        text='1.請先登入購買帳號' \
+             '2.在上方選單中點選「我的主頁」，即可以看到所有已購買的課程。' \
+             '3.若購買的課程尚在預購期間，則需等待課程正式開課後（預購最後一天的隔天）得以上課。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot4=='5':
+        text='您可以在任何能連上網路的地區，觀看線上學校的所有課程。' \
+             '近期由於中國大陸意外封鎖台灣部分媒體服務，造成部分網站無法在中國大陸部分地區瀏覽。' \
+             '若您發現您所在地區無法連線至線上學校網站，請您先向所在地的「網路服務電信業者」反映此問題並瞭解原因後，再決定是否訂閱課程。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot4=='6':
+        text='所有課程影音皆需在連網環境觀看，並無提供影音下載服務。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot4=='7':
+        text='若該課程或章節有附教材，您可以在購買後，於課程頁面下方的單元處，點選講義或教材的連結來下載檔案。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot4=='8':
+        text='1.請先確認您是否成功購買此課程。您可以登入後點擊頭像，至「訂單記錄」查詢購買狀況。' \
+             '2.確認您所購買的課程是否已正式開課，或尚在預購期間，若為後者則必須等待至開課期間（預購最後一天的隔天）才能觀看。' \
+             '3.若上述條件已達成還無法播放，請寫信至客服信箱 bill@cw.com.tw 或致電服務專線 02-2662-0332，說明您的會員名稱、會員帳號（信箱），以及觀看的課程名稱，並盡可能詳細說明您使用的網路操作環境。' \
+             '（建議說明：使用電腦／手機／平板……哪種載具、使用哪種瀏覽器、使用有線或無線連網……等），若能將遇到的問題截圖提供於客服信件中更佳。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot4=='9':
+        text='請使用購課時的帳號登入會員，若您有多組帳號，建議切換登入不同的帳戶，以便觀看您已購買的課程，在「訂單記錄」列表中可以看到已購項目。' \
+             '如非上述問題，請撥打服務專線 02-2662-0332 ，將有專人為您處理。（客服時段：週一至週五 9:00~17:30，例假日及國定假日則暫停服務）'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot4=='10':
+        text='(一) 桌機設備需求：Windows系統 Windows 8、Windows 8.1 或 Windows 10 以上版本 Intel Pentium 4 以上版本處理器 (可支援 SSE2)' \
+             '注意：伺服器必須為 Windows Server 2008 R2、Windows Server 2012、Windows Server 2012 R2 或 Windows Server 2016。' \
+             'MAC OS X Yosemite 10.10 以上版本' \
+             'Linux 64 位元 Ubuntu 14.04 以上版本、Debian 8 以上版本、openSUSE 13.3 以上版本或 Fedora Linux 24 以上版本 Intel Pentium 4 以上版本處理器 (可支援 SSE2)' \
+             '(二) 行動裝置需求：iOS 5.0 以上版本行動裝置 Android 6.0 以上版本行動裝置' \
+             '(三) 瀏覽器需求：為提供您更穩定的瀏覽品質與網站體驗，若您使用IE8 (含)以下版本瀏覽器，建議您升級您的IE瀏覽器，或使用其他瀏覽器軟體 Google Chrome、Firefox、Safari，以電腦瀏覽建議 1024 x 768 以上之螢幕解析度。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot4=='11':
+        text='請您嘗試以下幾種方式' \
+             '1.清除瀏覽器的cookie，重新拜訪網頁' \
+             '2.使用無痕開啟網頁' \
+             '3.將您所使用的瀏覽器更新到最新版本，重新拜訪網頁' \
+             '4.如上述方式皆無效，請您更新裝置的作業系統至最新版本' \
+             '如您使用的是windows電腦，但系統已無法做更新，請您點選下方「手動更新作業系統」的按鈕，找到符合您電腦系統的安裝檔，下載並安裝。安裝更新完成後，再重新開啟網頁。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+
+def Rappli(intent_request): 
+    mes='您可以繼續查詢，如需人工支持，請輸入轉人工，謝謝!'
+
+    session_attributes = get_session_attributes(intent_request)
+    #item_slot = get_slot(intent_request, 'Item')
+    input_slot5 = get_slot(intent_request, 'input5')
+    # fulfillment_state = "Fulfilled"
+    # if item_slot=='1':
+    if input_slot5=='1':
+        text='（一）若您想退費的課程尚在「預購期間」：則您可以在「預購期最後一日」前(含)，提出退費申請。' \
+             '（二）若您想退費的課程已經「正式開課」：正式開課日為預購期最後一日的隔天。在購買後7天內，未觀看課程的任一付費單元，皆可提出退費申請。若已觀看任一付費單元，則無法退費。' \
+             '（三）若您想退費的課程尚在「預購期間」但已「提前開課」：在預購期結束前，未觀看課程的任一付費單元，皆可提出退費申請。若已觀看任一付費單元，則無法退費。' \
+             '（四）如您因故停止訂購/取消訂閱本產品，您可以選擇將款項退還原刷卡消費之信用卡。若選擇銀行匯款/郵局匯票退款，需再扣除手續費後（依銀行/郵局規定）退還款項。' \
+             '範例：A某在7/6下單購買預購課程，該課程於7/11開課，A某一直都沒看任一付費單元，所以A某在7/12(含)前都可以申請退費。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot5=='2':
+        text='（一）退費時機皆可參照上方的退費政策。' \
+             '（二）唯若想退費的課程是當初藉由優惠課程組合所購買的，則無法只退該堂課。一經退費，課程組合內的課程都將無法觀看。' \
+             '（三）若想退費的課程是當初藉由優惠課程組合所購買的，但已觀看組合中任一課程、任一付費單元，則無法退費。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot5=='3':
+        text='登入後，點選「留言客服」進行退費流程。當系統收到您的退費通知後，我們將盡快進行審查，並協助退費事宜。' \
+        '如有其他特殊情況請洽服務專線02-2662-0332，將會有專人提供後續協助。（客服時段：週一至週五 9:00~17:30，例假日及國定假日則暫停服務）'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+
+def Invoice(intent_request): 
+    mes='您可以繼續查詢，如需人工支持，請輸入轉人工，謝謝!'
+
+    session_attributes = get_session_attributes(intent_request)
+    #item_slot = get_slot(intent_request, 'Item')
+    input_slot6 = get_slot(intent_request, 'input6')
+    # fulfillment_state = "Fulfilled"
+    # if item_slot=='1':
+    if input_slot6=='1':
+        text='根據財政部令「電子發票實施作業要點」，於本公司消費開立之電子發票，不主動寄送，並於規定期限內上傳至政府平台，您可至財政部電子發票整合服務平台或線上學校「我的訂單」查詢。'\
+             '相關資料請參考財政部電子發票整合服務平台。目前本公司消費開立之「公司戶電子發票」尚未開放共通性載具選項。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot6=='2':
+        text='根據財政部令「電子發票實施作業要點」，於本公司消費所開立之「個人式電子發票」，可選擇「會員載具」，發票將保存於「我的訂單」，會員可至「我的訂單」查閱；' \
+             '此外，每逢單月26日將由本公司自動為您對獎，中獎發票將掛號寄至您訂購時指定之地址，並同步 E-mail 通知您。(若訂購時填寫地址不完整或有誤，將影響中獎發票寄送。)'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot6=='3':
+        text='（一）個人式電子發票(二聯式發票)' \
+             '1. 依據您所選擇之發票載具類型進行發票開立，您可於發票開立後48小時過後至財政部電子發票整合服務平台查閱，也可在收到電子發票開立通知的E-mail內，檢視您的發票開立資料。' \
+             '2. 若您選擇會員載具者，每逢單月26日由本公司為您對獎（已索取取紙本、已捐贈及已作廢發票除外），中獎發票將掛號寄至您訂購時指定之地址，並同步 E-mail 通知您。若訂購時填寫地址不完整或有誤，將影響中獎發票寄送。若對發票寄送地址有疑問，請聯絡客服人員查核。' \
+             '3.若您選擇共通性載具者(手機載具/自然人憑證載具)，中獎後可至財政部電子發票整合服務平台 或多媒體服務機(如ibon)列印紙本發票兌獎。' \
+             '4. 選擇電子發票證明聯紙本者，本公司將不再為您進行對獎，請您妥善保管您的電子發票證明聯，避免影響兌獎權益。若證明聯正本遺失，補印發票將無法領獎。電子發票具有與紙本發票相同效力，更不會有紙本遺失無法兌領獎的問題，並享有雲端發票增開獎項等優點，建議您使用電子發票。' \
+             '（二）公司戶電子發票(三聯式發票)' \
+             '1. 選擇公司戶電子發票，可於收到電子發票開立通知的E-mail內，依信中所夾附之PDF檔 ，列印電子發票證明聯，據以向公司報帳。' \
+             '2. 您也可於網站會員專區查詢電子發票開立資訊。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot6=='4':
+        text='1. 若學校及政府單位可以提供統一編號及抬頭者，可以選擇公司戶(三聯式) 電子發票，在收到電子發票開立通知的E-mail內，依信中所夾附之PDF檔，列印電子發票證明聯，據以向單位報帳。' \
+             '2. 若學校及政府單位沒有統一編號及抬頭者，需要紙本向單位報帳，請選擇個人式(二聯式)電子發票，並勾選索取紙本選項。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot6=='5':
+        text='電子發票捐贈碼是由受捐贈機關或團體自行設定的專屬號碼，可於網站結帳作業選擇發票欲捐贈的受捐贈機關或團體。若您於訂購時選擇捐贈發票，依據法令規定，已捐贈的發票將無法索取紙本發票及更改捐贈對象。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot6=='6':
+        text='您可於收到發票開立通知的E-mail內，依信中所夾附之PDF檔 ，列印電子發票證明聯，即可據此向公司報帳。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot6=='7':
+        text='依統一發票辦法規定，只有書寫錯誤可以修改，若您原選擇公司戶電子發票，但因資料錯誤需更改統一編號，請您來電客服中心(TEL:02-2662-0332週一至週五9:00~17:30)，我們將重新為您辦理，原始發票會作廢重新開立新的發票，完成後也將再行E-mail通知您，請您依信內所附的PDF檔重新列印出證明聯。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot6=='8':
+        text='本公司已全面開立電子發票，發票一旦開立後即無法更動其內容，發票商品名稱將依訂購當時品名和金額開立，請恕無法指定開立日期、其它品名或金額。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot6=='9':
+        text='依統一發票辦法規定，發票一經開立，將無法再轉換開立發票類型。' \
+             '例如：公司戶電子發票(可供公司報帳使用)，改開個人式電子發票(一般發票)，或個人式電子發票改開公司戶電子發票，請您於消費時確認發票選項，本公司已善盡告知義務，且為配合國稅局勸止二聯換開三聯之政策，本公司有權利考量各因素後拒絕換開發票。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot6=='10':
+        text='在您收到發票開立通知的E-mail後，透過通知信內所附之發票網址查詢到發票後，點選畫面上「載具歸戶」功能即可。' \
+             '目前僅需要自行完成一次步驟即可完成載具歸戶，之後每一筆交易的發票都可在您指定的載具下進行查詢管理。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+    elif input_slot6=='11':
+        text='「個人式電子發票」每逢單月25日開獎後，將由財政部電子發票整合平台統一進行對獎作業，中獎發票領取方式將依您使用發票載具類型及歸戶狀態而區分：' \
+             '（一）手機條碼/自然人憑證(已歸戶)財政部電子發票整合服務平台依據您留存之電子郵件及手機簡訊通知中獎。亦可至財政部電子發票整合服務平台或使用超商多媒體服務機查詢。' \
+             '若已設定領獎帳戶，獎金將於開獎次月6號直接匯入歸戶指定帳號中(扣除應繳納稅額)；未設定領獎帳戶，則中獎人可至財政部電子發票整合服務平台或超商多媒體服務機列印紙本發票向郵局兌獎。' \
+             '（二）會員載具(未歸戶)' \
+             '將於單月30日前(遇假日順延)，依財政部電子發票整合服務平台所提供之中獎清冊，自動幫您核對是否中獎。中獎發票將於10個工作天內，以掛號郵寄至您的訂單地址。' \
+             '＊建議您可進行發票歸戶設定，可以統一查詢及管理您的電子發票，並享有雲端發票增開獎項等優點。若您完成銀行帳戶資料設定，還可自動將獎金匯入帳戶中，不用再擔心發票破損、遺失或忘記領獎。'+'\n'+mes
+        message_content = {'contentType': 'PlainText', 'content': text}
+        return elicit_intent(intent_request,session_attributes,message_content)
+
+def dispatch(intent_request):
+    intent_name = intent_request['sessionState']['intent']['name']
+
+    response = None
+    if intent_name == 'FAQ':
+        return FAQ(intent_request)
+    elif intent_name == 'Platform':
+        return Platform(intent_request)
+    elif intent_name == 'BuyClass':
+        return BuyClass(intent_request)
+    elif intent_name == 'WatchClass':
+        return WatchClass(intent_request)
+    elif intent_name == 'Rappli':
+        return Rappli(intent_request)
+    elif intent_name == 'Invoice':
+        return Invoice(intent_request)
+    else:
+        raise Exception('error')
+
+
+def lambda_handler(event, context):
+    response = dispatch(event)
+    return response
+
+
+def elicit_intent(intent_request, session_attributes, message):
+    return {
+        'sessionState': {
+            'dialogAction': {
+                'type': 'ElicitIntent'
+            },
+            'sessionAttributes': session_attributes
+        },
+        'messages': [message] if message != None else None,
+        'requestAttributes': intent_request['requestAttributes'] if 'requestAttributes' in intent_request else None
+    }
